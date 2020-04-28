@@ -39,6 +39,21 @@ const getLatestDailyDeaths = (data: any): number => {
 }; // getLatestDailyDeaths
 
 
+const getPreviousValue = (data: any, daysAgo: number): number => {
+
+  const defaultDate = '0000.00.00';
+
+  try {
+    return data?.sort((a, b) =>
+      new Date(b?.date ?? defaultDate) - new Date(a?.date ?? defaultDate)
+    )[daysAgo]?.value ?? 0
+  } catch (e) {
+    return 0
+  }
+
+}; // getLatestDailyDeaths
+
+
 const timestamp = (data): string =>
     data.hasOwnProperty("lastUpdatedAt")
         ? moment(data.lastUpdatedAt).format("D MMM YYYY, h:mma")
@@ -67,14 +82,16 @@ const Regional: ComponentType<Props> = ({ }: Props) => {
         subtitle={`Last updated ${timestamp(data)}`}
       />
       <BigNumber
-        caption="Total number of lab-confirmed UK cases"
-        number={data?.overview?.K02000001?.totalCases?.value ?? 0}
-        description={ 'Includes tests carried out by commercial partners which are not included in the 4 National totals' }
-      />
-      <BigNumber
         caption="Daily number of lab-confirmed UK cases"
         number={data?.overview?.K02000001?.newCases?.value ?? 0}
         description={ "Number of new cases reported today" }
+      />
+      <BigNumber
+        caption="Daily number of COVID-19 associated UK deaths in hospital"
+        number={getLatestDailyDeaths(data)}
+        yesterday={ getPreviousValue(data?.overview?.K02000001?.dailyDeaths ?? [], 1) }
+        dayBeforeYesterday={ getPreviousValue(data?.overview?.K02000001?.dailyDeaths ?? [], 2) }
+        description={ "Number of new deaths reported today" }
       />
       <BigNumber
         caption="Total number of COVID-19 associated UK deaths in hospital"
@@ -82,9 +99,9 @@ const Regional: ComponentType<Props> = ({ }: Props) => {
         description={ "Deaths of patients in hospitals who have tested positive for COVID-19" }
       />
       <BigNumber
-        caption="Daily number of COVID-19 associated UK deaths in hospital"
-        number={getLatestDailyDeaths(data)}
-        description={ "Number of new deaths reported today" }
+        caption="Total number of lab-confirmed UK cases"
+        number={data?.overview?.K02000001?.totalCases?.value ?? 0}
+        description={ 'Includes tests carried out by commercial partners which are not included in the 4 National totals' }
       />
       {layout === 'desktop' && (
         <>

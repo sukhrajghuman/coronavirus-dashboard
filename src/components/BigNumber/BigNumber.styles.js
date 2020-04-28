@@ -31,6 +31,7 @@ export const Number: ComponentType<*> = (() => {
   return styled.div`
     font-size: 2.25rem;
     margin-bottom: 10px;
+    color: #799FC6;
   `;
 })();
 
@@ -48,5 +49,12 @@ export const Triangle: ComponentType<*> = (() => {
 export const Subtext: ComponentType<*> = (() => {
   return styled.span`
     margin-bottom: 0;
+  `;
+})();
+
+export const ChangeHint: ComponentType<*> = (() => {
+  return styled.p`
+    margin-top: -10px;
+    margin-bottom: .8rem;
   `;
 })();
