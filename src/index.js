@@ -9,6 +9,8 @@ import * as serviceWorker from './serviceWorker';
 import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
+import "core-js/es/map";
+import "core-js/es/set";
 
 import './index.scss';
 
